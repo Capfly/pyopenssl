@@ -1668,6 +1668,15 @@ class Connection(object):
 
         return _ffi.string(name)
 
+    def set_ctx_dane_enable(self):
+        return _lib.SSL_CTX_dane_enable(self._context._context)
+
+    def set_dane_enable(self):
+        return _lib.SSL_dane_enable(self._ssl, self.get_servername())
+
+    def dane_tlsa_add(self, usage, selector, matching_type, data):
+        return _lib.SSL_dane_tlsa_add(self._ssl, usage, selector, matching_type, data, len(data))
+
     def set_tlsext_host_name(self, name):
         """
         Set the value of the servername extension to send in the client hello.
